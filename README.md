@@ -29,7 +29,7 @@ Feel free to test it out and submit improvements and pull requests.
 
 ##### Requirements
 
-- node ^12.0.0
+- node 16.0.0
 - yarn
 
 ##### Clone 
