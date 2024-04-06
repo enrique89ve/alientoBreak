@@ -1,0 +1,234 @@
+.entry-list-item {
+
+  span {
+    @include themify(dusk) {
+      color: $dusk-primary !important;
+    }
+
+    @include themify(burning) {
+      color: $burning-primary !important;
+    }
+
+    @include themify(sky) {
+      color: $white-three !important;
+    }
+  }
+
+  a {
+    @include themify(dusk) {
+      color: $dusk-primary !important;
+    }
+
+    @include themify(burning) {
+      color: $burning-primary !important;
+    }
+
+    @include themify(sky) {
+      color: $white-three !important;
+    }
+  }
+  
+  @media (max-width: $sm-break) {
+    position: unset;
+  }
+
+  @include entry-list-item;
+
+  .cross-item {
+    font-size: 84%;
+    padding: 6px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+
+    @include themify(day) {
+      background: lighten($dark-sky-blue, 42);
+      color: $charcoal-grey;
+    }
+
+    @include themify(dusk) {
+      background: lighten($silver, 42);
+      color: $charcoal-grey;
+    }
+
+    @include themify(sky) {
+      background: lighten($silver, 42);
+      color: $white-three;
+    }
+
+    @include themify(night) {
+      background: $dark-grey-blue;
+    }
+
+    .cross-item-link {
+      display: none;
+
+      @media (min-width: $sm-break) {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.grid-view {
+  .entry-list-item {
+    @media (min-width: $sm-break) {
+      .item-body {
+        .item-image {
+          float: none;
+          height: 450px;
+          border-radius: 4px;
+          margin: 0 0 10px 0;
+          width: 100%;
+
+          &.noImage {
+            display: flex;
+          }
+
+          a {
+            display: block;
+            width: 100%;
+            text-align: center;
+
+            img {
+              width: 100%;
+            }
+          }
+
+          @media (min-width: $xxxl-break) {
+            height: 240px;
+          }
+        }
+
+        .item-summary {
+          float: none;
+          width: 100%;
+        }
+
+        .item-controls {
+          float: none;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .entry-list-item {
+    &.blog,
+    &.posts {
+      @media (min-width: $sm-break) {
+        .item-body {
+          .item-image {
+            @media (min-width: $xxxl-break) {
+              height: 180px;
+            }
+            @media (min-width: $xs-break) {
+              height: 200px;
+              a {
+                img {
+                  width: 100% !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  &:not(.limited-area) {
+    .entry-list-item {
+      @media (min-width: $xl-break) {
+        margin-right: 2%;
+        padding-right: 0;
+        width: 49%;
+
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+
+      @media (min-width: $xxxl-break) {
+        margin-right: 1%;
+        width: 32.6%;
+
+        &:nth-child(2n) {
+          margin-right: 1%;
+        }
+
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  &.limited-area {
+    .entry-list-item {
+      @media (min-width: $xxl-break) {
+        margin-right: 2%;
+        padding-right: 0;
+        width: 49%;
+
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+}
+
+.entry-list-body {
+  &.grid-view,
+  .entry-list-item {
+
+    &.comments,
+    &.replies {
+      .item-body {
+        .item-image {
+          &.noImage {
+            display: none;
+
+            &~.item-summary {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.noImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 45px;
+
+    @media (max-width: $sm-break) {
+      width: 90px;
+    }
+  }
+
+  @media (max-width: $sm-break) {
+    min-height: 220px;
+  }
+}
+
+.mute-icon {
+  width: 20px;
+}
+
+.author-down-arrow {
+  display: none;
+
+  @media (max-width: $sm-break) {
+    display: inline-flex;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+  }
+}

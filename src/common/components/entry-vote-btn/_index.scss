@@ -1,0 +1,509 @@
+.entry-vote-btn {
+  margin-right: 10px;
+  color: $white-three;
+
+  @media (max-width: $xxsm-break) {
+    margin-right: 5px;
+  }
+  .btn-vote {
+    @include btn-vote;
+  }
+}
+
+.voting-controls {
+  display: flex;
+  align-items: center;
+
+  .estimated,
+  .percentage {
+    white-space: nowrap;
+    width: 60px;
+
+    @media (max-width: ($sm-break - 1px)) {
+      font-size: 13px;
+    }
+  }
+
+  .btn-vote {
+    flex-shrink: 0;
+  }
+
+  .btn-up-vote,
+  .estimated,
+  .slider,
+  .percentage {
+    margin-right: 8px;
+  }
+
+  .estimated,
+  .slider,
+  .percentage {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .slider {
+    flex-grow: 1;
+    margin-right: 0px !important;
+
+    input[type="range"] {
+      width: 100%;
+
+    }
+  }
+}
+
+.vote-modal {
+  .modal-content {
+    border: none;
+    border-radius: 12px;
+    padding: 6px;
+  }
+}
+
+// Custom range input styles
+
+.voting-controls-up,
+.voting-controls-down {
+  .btn-vote {
+    @include btn-vote;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    margin: 5.5px 0;
+    background-color: $transparent;
+    -webkit-appearance: none;
+  }
+
+  input[type="range"]:focus {
+    outline: none;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    border: 0;
+    border-radius: 20px;
+    width: 100%;
+    height: 9px;
+    cursor: pointer;
+    background: $white-four;
+
+    @include themify(dusk) {
+      background: $white-four;
+    }
+
+    @include themify(night) {
+      background: $gunmetal;
+    }
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    margin-top: -5.5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    -webkit-appearance: none;
+
+    @include themify(day) {
+      border: 2px solid $white;
+    }
+
+    @include themify(dusk) {
+      border: 2px solid $white;
+    }
+
+    @include themify(night) {
+      border: 2px solid $silver;
+    }
+  }
+
+  input[type="range"]:focus::-webkit-slider-runnable-track {
+    @include themify(day) {
+      background: $white-four;
+    }
+
+    @include themify(dusk) {
+      background: $white-four;
+    }
+
+    @include themify(night) {
+      background: $gunmetal;
+    }
+  }
+
+  input[type="range"]::-moz-range-track {
+    border: 0;
+    border-radius: 20px;
+    width: 100%;
+    height: 9px;
+    cursor: pointer;
+
+    @include themify(day) {
+      background: $white-four;
+    }
+
+    @include themify(night) {
+      background: $gunmetal;
+    }
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+
+    @include themify(day) {
+      border: 2px solid $white;
+    }
+
+    @include themify(dusk) {
+      border: 2px solid $white;
+    }
+
+    @include themify(sky) {
+      border: 2px solid $white-three;
+    }
+
+    @include themify(night) {
+      border: 2px solid $silver;
+    }
+  }
+
+  input[type="range"]::-ms-track {
+    background: $transparent;
+    border-color: $transparent;
+    border-width: 6.4px 0;
+    color: $transparent;
+    width: 100%;
+    height: 9px;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-ms-fill-lower {
+    border: 0;
+    border-radius: 40px;
+
+    @include themify(day) {
+      background: $white-four;
+    }
+
+    @include themify(dusk) {
+      background: $white-four;
+    }
+
+    @include themify(night) {
+      background: $gunmetal;
+    }
+  }
+
+  input[type="range"]::-ms-fill-upper {
+    border: 0;
+    border-radius: 40px;
+
+    @include themify(day) {
+      background: $white-four;
+    }
+
+    @include themify(dusk) {
+      background: $white-four;
+    }
+
+    @include themify(night) {
+      background: $gunmetal;
+    }
+  }
+
+  input[type="range"]::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 0px;
+
+    @include themify(day) {
+      border: 2px solid $white;
+    }
+
+    @include themify(dusk) {
+      border: 2px solid $white;
+    }
+
+
+    @include themify(night) {
+      border: 2px solid $silver;
+    }
+
+    /*Needed to keep the Edge thumb centred*/
+  }
+}
+
+.voting-controls-up {
+  input[type="range"]::-webkit-slider-thumb {
+    background: $dark-sky-blue;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    background: $dark-sky-blue;
+  }
+
+  input[type="range"]::-ms-thumb {
+    background: $dark-sky-blue;
+  }
+}
+
+.voting-controls-down {
+  input[type="range"]::-webkit-slider-thumb {
+    background: $red4;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    background: $red4;
+  }
+
+  input[type="range"]::-ms-thumb {
+    background: $red4;
+  }
+}
+
+.tooltip-vote {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-vote .tooltiptext {
+  width: 32vw;
+  color: $dark-two;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  left: -12px;
+  top: -19px;
+
+  @media screen and (max-width: 1100px) {
+    width: 65vw;
+  }
+
+  @media screen and (max-width: 560px) {
+    width: 93vw;
+    left: auto;
+    right: auto;
+    top: -23px;
+  }
+
+  @media screen and (max-width: 420px) {
+    width: 91vw;
+  }
+
+  @media screen and (max-width: 375px) {
+    width: 90vw;
+  }
+
+  @media screen and (max-width: 320px) {
+    width: 88vw;
+    .percentage {
+      width: 60px !important;
+    }
+  }
+
+  box-shadow: 0px 1px 4px 1px $white-four;
+  background-color: $white;
+  color: $dark-two;
+
+  @include themify(sky) {
+    box-shadow: 0px 1px 4px 1px $white-four;
+    background-color: $sky-primary;
+    color: $white-three;
+  }
+
+  @include themify(night) {
+    box-shadow: 0px 1px 4px 1px $dark;
+    background-color: $dark-two;
+    color: $white;
+  }
+}
+
+.primary-btn {
+  color: $dark-sky-blue !important;
+  background-color: $transparent !important;
+}
+
+.primary-btn-vote {
+  @include themify(night) {
+    color: $dark-sky-blue !important;
+    background-color: $transparent !important;
+  }
+
+  @include themify(day) {
+    color: $dark-sky-blue !important;
+    background-color: $white !important;
+  }
+
+  @include themify(dusk) {
+    color: $dark-sky-blue !important;
+    background-color: $white !important;
+  }
+
+  .btn-inner {
+    @include themify(night) {
+      color: $dark-sky-blue !important;
+      background-color: $transparent !important;
+    }
+
+    @include themify(day) {
+      color: $dark-sky-blue !important;
+      background-color: $white !important;
+    }
+
+    @include themify(dusk) {
+      color: $dark-sky-blue !important;
+      background-color: $white !important;
+    }
+  }
+
+  &:hover {
+    background-color: $dark-sky-blue !important;
+    color: $white !important;
+
+    .btn-inner {
+      color: $white !important;
+      background-color: $dark-sky-blue !important;
+    }
+  }
+}
+
+.primary-btn-done {
+  @include themify(night) {
+    color: $white !important;
+    background-color: $dark-sky-blue !important;
+  }
+
+  @include themify(day) {
+    color: $white !important;
+    background-color: $dark-sky-blue !important;
+  }
+}
+
+.secondary-btn-done {
+  @include themify(night) {
+    color: $white !important;
+    background-color: $red2 !important;
+  }
+
+  @include themify(day) {
+    color: $white !important;
+    background-color: $red2 !important;
+  }
+}
+
+.secondary-btn-vote {
+  color: $red2 !important;
+
+  @include themify(night) {
+    background-color: $transparent !important;
+  }
+
+  @include themify(day) {
+    background-color: $white !important;
+  }
+
+  svg {
+    fill: $red2 !important;
+    transform: none !important;
+  }
+
+  .btn-inner {
+    color: $red2 !important;
+    background-color: $white !important;
+
+    @include themify(night) {
+      background-color: $transparent !important;
+    }
+  }
+
+  &:hover {
+    background-color: $red2 !important;
+    color: $white !important;
+
+    .btn-inner {
+      color: $white !important;
+      background-color: $red2 !important;
+
+    svg {
+      fill: $white !important;
+    }
+  }
+  }
+}
+
+.vote-error {
+  font-size: 12px;
+  color: $red;
+  display: flex;
+  justify-content: center;
+p {
+  margin:0px;
+}
+
+  @media screen and (max-width: 480px) {
+    p {
+      width: 90%;
+      text-align: center;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+.no-rotate svg{
+  transform: rotate(0deg) !important;
+}
+
+.vote-warning {
+  font-size: 12px;
+  color: $gray-600;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+p {
+  margin:0px;
+}
+
+  @media screen and (max-width: 480px) {
+    p {
+      width: 90%;
+      text-align: center;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+.vote-remove {
+  font-size: 12px;
+  color: $yellow;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+p {
+  margin:0px;
+}
+
+  @media screen and (max-width: 480px) {
+    p {
+      width: 90%;
+      text-align: center;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+.primary-btn-vote svg {
+  transform: rotate(0deg) !important;
+}
+
+.reverse-range {
+  transform: rotateY(180deg);
+}

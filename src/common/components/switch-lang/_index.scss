@@ -1,0 +1,18 @@
+.switch-language {
+  .menu-list {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+  .drop-down-menu-contributors {
+    padding: 10px 0;
+    text-align: center;
+
+    @include themify(day) {
+      background: $white-three;
+    }
+
+    @include themify(night) {
+      background: $dark-two;
+    }
+  }
+}

@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(1) Dialog (1) Up vote 1`] = `
+<div
+  className="voting-controls voting-controls-up"
+>
+  <div
+    className="btn-vote btn-up-vote vote-btn-lg primary-btn-vote"
+    onClick={[Function]}
+  >
+    <span
+      className="btn-inner"
+    >
+      <svg
+        className="slider-svg-up"
+        viewBox="6 8 12 7.41"
+      >
+        <path
+          d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
+          fill="currentColor"
+        />
+      </svg>
+    </span>
+  </div>
+  <div
+    className="estimated"
+  >
+    $ 0.040
+  </div>
+  <div
+    className="slider slider-up"
+  >
+    <input
+      autoFocus={true}
+      className="custom-range"
+      id="86342505"
+      max={100}
+      min={0}
+      onChange={[Function]}
+      step={0.1}
+      type="range"
+      value={100}
+    />
+  </div>
+  <div
+    className="percentage"
+  >
+    100.0%
+  </div>
+  <div
+    className="btn-vote btn-down-vote vote-btn-lg secondary-btn-vote"
+    onClick={[Function]}
+  >
+    <span
+      className="btn-inner"
+    >
+      <svg
+        className="slider-svg-down"
+        viewBox="6 8.59 12 7.41"
+      >
+        <path
+          d="M0 0h24v24H0V0z"
+          fill="none"
+        />
+        <path
+          d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+        />
+      </svg>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`(1) Dialog (2) Down vote 1`] = `
+<div
+  className="voting-controls voting-controls-down"
+>
+  <div
+    className="btn-vote btn-up-vote vote-btn-lg primary-btn-vote"
+    onClick={[Function]}
+  >
+    <span
+      className="btn-inner no-rotate"
+    >
+      <svg
+        className="slider-svg-up"
+        viewBox="6 8 12 7.41"
+      >
+        <path
+          d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
+          fill="currentColor"
+        />
+      </svg>
+    </span>
+  </div>
+  <div
+    className="estimated"
+  >
+    $ 0.000
+  </div>
+  <div
+    className="slider slider-down"
+  >
+    <input
+      className="reverse-range custom-range"
+      id="86342505"
+      max={-1}
+      min={-100}
+      onChange={[Function]}
+      step={0.1}
+      type="range"
+      value={-1}
+    />
+  </div>
+  <div
+    className="percentage"
+  >
+    -1.0%
+  </div>
+  <div
+    className="btn-vote btn-down-vote vote-btn-lg secondary-btn-vote"
+    onClick={[Function]}
+  >
+    <span
+      className="btn-inner"
+    >
+      <svg
+        className="slider-svg-down"
+        viewBox="6 8.59 12 7.41"
+      >
+        <path
+          d="M0 0h24v24H0V0z"
+          fill="none"
+        />
+        <path
+          d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+        />
+      </svg>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`(2) Btn - No active user (1) Render 1`] = `
+<div
+  onClick={[Function]}
+>
+  <div>
+    <div
+      className="entry-vote-btn"
+      onClick={[Function]}
+    >
+      <div
+        className="btn-vote btn-up-vote"
+      >
+        <div
+          className=""
+        >
+          <span
+            className="btn-inner "
+          >
+            <svg
+              className="vote-svg"
+              viewBox="6 8 12 7.41"
+            >
+              <path
+                d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`(3) Btn - Up voted (1) Render 1`] = `
+<div>
+  <div>
+    <div
+      className="entry-vote-btn"
+      onClick={[Function]}
+    >
+      <div
+        className="btn-vote btn-up-vote primary-btn-done voted"
+      >
+        <div
+          className=""
+        >
+          <span
+            className="btn-inner "
+          >
+            <svg
+              className="vote-svg"
+              viewBox="6 8 12 7.41"
+            >
+              <path
+                d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

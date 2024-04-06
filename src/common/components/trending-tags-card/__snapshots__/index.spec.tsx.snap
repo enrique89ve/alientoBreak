@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`(1) Default render 1`] = `
+<div
+  className="trending-tags-card"
+>
+  <h2
+    className="list-header"
+  >
+    Topics
+  </h2>
+  <div
+    className="d-flex"
+  >
+    <a
+      className="tag-list-item d-flex align-items-center"
+      href="/hot/art"
+      onClick={[Function]}
+      title="Unmoderated topics"
+    >
+      art
+    </a>
+  </div>
+  <div
+    className="d-flex"
+  >
+    <a
+      className="tag-list-item d-flex align-items-center"
+      href="/hot/hive"
+      onClick={[Function]}
+      title="Unmoderated topics"
+    >
+      hive
+    </a>
+  </div>
+  <div
+    className="d-flex"
+  >
+    <a
+      className="tag-list-item d-flex align-items-center"
+      href="/hot/news"
+      onClick={[Function]}
+      title="Unmoderated topics"
+    >
+      news
+    </a>
+  </div>
+</div>
+`;
+
+exports[`(2) Selected tag 1`] = `
+<div
+  className="trending-tags-card"
+>
+  <h2
+    className="list-header"
+  >
+    Topics
+  </h2>
+  <div
+    className="d-flex"
+  >
+    <a
+      className="tag-list-item d-flex align-items-center"
+      href="/hot/art"
+      onClick={[Function]}
+      title="Unmoderated topics"
+    >
+      art
+    </a>
+  </div>
+  <div
+    className="d-flex"
+  >
+    <a
+      className="tag-list-item selected-item d-flex align-items-center"
+      href="/hot/hive"
+      onClick={[Function]}
+      title="Unmoderated topics"
+    >
+      hive
+      <div
+        className="text-secondary ml-4 pointer"
+        onClick={[Function]}
+      >
+        ✖
+      </div>
+    </a>
+  </div>
+  <div
+    className="d-flex"
+  >
+    <a
+      className="tag-list-item d-flex align-items-center"
+      href="/hot/news"
+      onClick={[Function]}
+      title="Unmoderated topics"
+    >
+      news
+    </a>
+  </div>
+</div>
+`;
