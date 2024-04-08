@@ -352,21 +352,39 @@ class ProfilePage extends BaseComponent<Props, State> {
         let database = entries[groupKey];
 
         const { hive_id: name } = global;
-        const tags = global.tags;
         const data = {
             ...database,
-            entries: database.entries.filter((entry) => {
-
-
-                if (entry.category === name) {
-                    return true;
-                }
-
-                if (entry.json_metadata && Array.isArray(entry.json_metadata.tags) && entry.json_metadata.tags.some((tag) => global.tags.includes(tag))) {
-                    return true;
-                }
-
-                return false;
+            entries: database?.entries?.filter(async (entry) => {
+                await Promise.all([
+                    new Promise((resolve) => {
+                        if (entry.category === name) {
+                            resolve(true);
+                        } else {
+                            resolve(false);
+                        }
+                    }),
+                    new Promise((resolve) => {
+                        if (entry.json_metadata && Array.isArray(entry.json_metadata.tags)) {
+                            const tags = entry.json_metadata.tags;
+                            const tagPromises = tags.map(async (tag) => {
+                                if (global.tags.includes(tag)) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            });
+                            Promise.all(tagPromises).then((results) => {
+                                if (results.includes(true)) {
+                                    resolve(true);
+                                } else {
+                                    resolve(false);
+                                }
+                            });
+                        } else {
+                            resolve(false);
+                        }
+                    })
+                ]);
             })
         };
 
@@ -403,7 +421,7 @@ class ProfilePage extends BaseComponent<Props, State> {
                             account
                         })}
 
-                        {data && data.entries.length > 0 &&
+                        {data && data.entries?.length > 0 &&
                             (filter === 'posts' || filter === 'comments') && (section === filter) && (
                                 <div className='searchProfile'>
                                     <SearchBox
@@ -498,14 +516,8 @@ class ProfilePage extends BaseComponent<Props, State> {
                                         }
 
                                         if (data !== undefined) {
-
-
-
                                             const entryList = data?.entries;
                                             const loading = data?.loading;
-
-
-
 
                                             return (
                                                 <>

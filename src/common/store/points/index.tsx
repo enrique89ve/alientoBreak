@@ -1,4 +1,5 @@
-import {Dispatch} from "redux";
+import { Dispatch } from "redux";
+
 
 import {
     Points,
@@ -11,7 +12,7 @@ import {
     ErrorAction
 } from "./types";
 
-import {getPoints, getPointTransactions} from "../../api/private-api";
+import { getPoints, getPointTransactions } from "../../api/private-api";
 
 export const initialState: Points = {
     points: "0.000",
@@ -24,7 +25,7 @@ export const initialState: Points = {
 export default (state: Points = initialState, action: Actions): Points => {
     switch (action.type) {
         case ActionTypes.FETCH: {
-            return {...state, filter: action.filter, transactions: [], loading: true}
+            return { ...state, filter: action.filter, transactions: [], loading: true }
         }
         case ActionTypes.FETCHED: {
             return {
@@ -36,10 +37,10 @@ export default (state: Points = initialState, action: Actions): Points => {
             }
         }
         case ActionTypes.ERROR: {
-            return {...state, loading: false}
+            return { ...state, loading: false }
         }
         case ActionTypes.RESET: {
-            return {...initialState};
+            return { ...initialState };
         }
         default:
             return state;

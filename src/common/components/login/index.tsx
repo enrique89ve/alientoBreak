@@ -1,47 +1,47 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {Modal, Form, Button, FormControl, Spinner} from "react-bootstrap";
+import { Modal, Form, Button, FormControl, Spinner } from "react-bootstrap";
 
 import isEqual from "react-fast-compare";
 
-import {PrivateKey, PublicKey, cryptoUtils} from "@hiveio/dhive";
+import { PrivateKey, PublicKey, cryptoUtils } from "@hiveio/dhive";
 
-import {History, Location} from "history";
+import { History, Location } from "history";
 import * as ls from "../../util/local-storage";
 
-import {AppWindow} from "../../../client/window";
+import { AppWindow } from "../../../client/window";
 
-import {Global} from "../../store/global/types";
-import {UI} from "../../store/ui/types";
-import {User} from "../../store/users/types";
-import {Account} from "../../store/accounts/types";
-import {ActiveUser} from "../../store/active-user/types";
-import {ToggleType} from "../../store/ui/types";
+import { Global } from "../../store/global/types";
+import { UI } from "../../store/ui/types";
+import { User } from "../../store/users/types";
+import { Account } from "../../store/accounts/types";
+import { ActiveUser } from "../../store/active-user/types";
+import { ToggleType } from "../../store/ui/types";
 
 import BaseComponent from "../base";
 import UserAvatar from "../user-avatar";
 import Tooltip from "../tooltip";
 import PopoverConfirm from "../popover-confirm";
 import OrDivider from "../or-divider";
-import {error} from "../feedback";
+import { error } from "../feedback";
 
-import {getAuthUrl, makeHsCode} from "../../helper/hive-signer";
-import {hsLogin} from "../../../desktop/app/helper/hive-signer";
+import { getAuthUrl, makeHsCode } from "../../helper/hive-signer";
+import { hsLogin } from "../../../desktop/app/helper/hive-signer";
 
-import {getAccount} from "../../api/hive";
-import {usrActivity} from "../../api/private-api";
-import {hsTokenRenew} from "../../api/auth-api";
-import {formatError, grantPostingPermission, revokePostingPermission} from "../../api/operations";
+import { getAccount } from "../../api/hive";
+import { usrActivity } from "../../api/private-api";
+import { hsTokenRenew } from "../../api/auth-api";
+import { formatError, grantPostingPermission, revokePostingPermission } from "../../api/operations";
 
-import {getRefreshToken} from "../../helper/user-token";
+import { getRefreshToken } from "../../helper/user-token";
 
-import {addAccountAuthority, removeAccountAuthority, signBuffer} from "../../helper/keychain";
+import { addAccountAuthority, removeAccountAuthority, signBuffer } from "../../helper/keychain";
 
-import {_t} from "../../i18n";
+import { _t } from "../../i18n";
 
 import _c from "../../util/fix-class-names";
 
-import {deleteForeverSvg} from "../../img/svg";
+import { deleteForeverSvg } from "../../img/svg";
 import { setupConfig } from "../../../setup";
 import { processLogin } from "../../api/breakaway";
 import { getCommunity } from "../../api/bridge";
@@ -79,7 +79,7 @@ export class LoginKc extends BaseComponent<LoginKcProps, LoginKcState> {
     const communityId = this.props.global.hive_id
     const community = await getCommunity(communityId);
     if (community) {
-      this.setState({community})
+      this.setState({ community })
       console.log(community)
     }
   }
@@ -146,7 +146,7 @@ export class LoginKc extends BaseComponent<LoginKcProps, LoginKcState> {
 
     this.stateSet({ inProgress: true });
 
-    const signer = async (message: string): Promise<string> =>  {
+    const signer = async (message: string): Promise<string> => {
       console.log("message", JSON.parse(message))
       const ts: any = Date.now();
       const sign = await signBuffer(username, message, "Active").then((r) => r.result);
@@ -266,8 +266,7 @@ export class UserItem extends Component<UserItemProps> {
     return (
       <div
         className={_c(
-          `user-list-item ${disabled ? "disabled" : ""} ${
-            activeUser && activeUser.username === user.username ? "active" : ""
+          `user-list-item ${disabled ? "disabled" : ""} ${activeUser && activeUser.username === user.username ? "active" : ""
           }`
         )}
         onClick={() => {
@@ -356,7 +355,7 @@ export class Login extends BaseComponent<LoginProps, State> {
     const communityId = this.props.global.hive_id
     const community = await getCommunity(communityId);
     if (community) {
-      this.setState({community})
+      this.setState({ community })
       console.log(community)
     }
   }
@@ -366,11 +365,11 @@ export class Login extends BaseComponent<LoginProps, State> {
     toggleUIProp("login");
   };
 
-  signer = async (username: string): Promise<string> =>  {
+  signer = async (username: string): Promise<string> => {
     const ts: any = Date.now();
     const signBa = await signBuffer(username, `${username}${ts}`, "Active").then((r) => r.result);
     console.log("signBa", signBa)
-    console.log("global",this.props.global)
+    console.log("global", this.props.global)
     console.log(username, ts, signBa, this.state.community)
     if (signBa) {
       const login = await processLogin(username, ts, signBa, this.state.community.title);
@@ -481,7 +480,7 @@ export class Login extends BaseComponent<LoginProps, State> {
       PublicKey.fromString(key);
       error(_t("login.error-public-key"));
       return;
-    } catch (e) {}
+    } catch (e) { }
 
     let account: Account;
 
@@ -603,7 +602,7 @@ export class Login extends BaseComponent<LoginProps, State> {
   render() {
     const { username, key, inProgress } = this.state;
     const { users, activeUser, global, userListRef } = this.props;
-    const logo = setupConfig.navBarImg;
+    const logo = "/comunidad.png";
     const hsLogo = global.isElectron
       ? "./img/hive-signer.svg"
       : require("../../img/hive-signer.svg");
@@ -744,82 +743,82 @@ export class Login extends BaseComponent<LoginProps, State> {
 }
 
 interface Props {
-    history: History;
-    location: Location;
-    global: Global;
-    ui: UI;
-    users: User[];
-    activeUser: ActiveUser | null;
-    addUser: (user: User) => void;
-    setActiveUser: (username: string | null) => void;
-    updateActiveUser: (data?: Account) => void;
-    deleteUser: (username: string) => void;
-    toggleUIProp: (what: ToggleType) => void;
+  history: History;
+  location: Location;
+  global: Global;
+  ui: UI;
+  users: User[];
+  activeUser: ActiveUser | null;
+  addUser: (user: User) => void;
+  setActiveUser: (username: string | null) => void;
+  updateActiveUser: (data?: Account) => void;
+  deleteUser: (username: string) => void;
+  toggleUIProp: (what: ToggleType) => void;
 }
 
 export default class LoginDialog extends Component<Props> {
 
-    userListRef = React.createRef();
+  userListRef = React.createRef();
 
-    hide = () => {
-        const {toggleUIProp} = this.props;
-        toggleUIProp("login");
+  hide = () => {
+    const { toggleUIProp } = this.props;
+    toggleUIProp("login");
+  }
+
+  componentWillUnmount() {
+    const { toggleUIProp, ui } = this.props;
+    if (ui.loginKc) {
+      toggleUIProp("loginKc");
     }
+  }
 
-    componentWillUnmount() {
-        const {toggleUIProp, ui} = this.props;
-        if (ui.loginKc) {
-            toggleUIProp("loginKc");
-        }
-    }
+  doLogin = async (hsCode: string, postingKey: null | undefined | string, account: Account) => {
+    const { global, setActiveUser, updateActiveUser, addUser } = this.props;
 
-    doLogin = async (hsCode: string, postingKey: null | undefined | string, account: Account) => {
-        const {global, setActiveUser, updateActiveUser, addUser} = this.props;
+    // get access token from code
+    return hsTokenRenew(hsCode).then(x => {
+      const user: User = {
+        username: x.username,
+        accessToken: x.access_token,
+        refreshToken: x.refresh_token,
+        expiresIn: x.expires_in,
+        postingKey
+      };
 
-        // get access token from code
-        return hsTokenRenew(hsCode).then(x => {
-            const user: User = {
-                username: x.username,
-                accessToken: x.access_token,
-                refreshToken: x.refresh_token,
-                expiresIn: x.expires_in,
-                postingKey
-            };
+      // add / update user data
+      addUser(user);
 
-            // add / update user data
-            addUser(user);
+      // activate user
+      setActiveUser(user.username);
 
-            // activate user
-            setActiveUser(user.username);
+      // add account data of the user to the reducer
+      updateActiveUser(account);
 
-            // add account data of the user to the reducer
-            updateActiveUser(account);
+      if (global.usePrivate) {
+        // login activity
+        usrActivity(user.username, 20);
+      }
 
-            if (global.usePrivate) {
-                // login activity
-                usrActivity(user.username, 20);
-            }
+      // redirection based on path name
+      const { location, history } = this.props;
+      if (location.pathname.startsWith("/signup")) {
+        const u = `/@${x.username}/feed`;
+        history.push(u);
+      }
+    });
+  }
 
-            // redirection based on path name
-            const {location, history} = this.props;
-            if (location.pathname.startsWith("/signup")) {
-                const u = `/@${x.username}/feed`;
-                history.push(u);
-            }
-        });
-    }
+  render() {
+    const { ui } = this.props;
 
-    render() {
-        const {ui} = this.props;
-
-        return (
-            <Modal show={true} centered={true} onHide={this.hide} className="login-modal modal-thin-header" animation={false}>
-                <Modal.Header closeButton={true}/>
-                <Modal.Body>
-                    {!ui.loginKc && <Login {...this.props} doLogin={this.doLogin} userListRef={this.userListRef}/>}
-                    {ui.loginKc && <LoginKc {...this.props} doLogin={this.doLogin}/>}
-                </Modal.Body>
-            </Modal>
-        );
-    }
+    return (
+      <Modal show={true} centered={true} onHide={this.hide} className="login-modal modal-thin-header" animation={false}>
+        <Modal.Header closeButton={true} />
+        <Modal.Body>
+          {!ui.loginKc && <Login {...this.props} doLogin={this.doLogin} userListRef={this.userListRef} />}
+          {ui.loginKc && <LoginKc {...this.props} doLogin={this.doLogin} />}
+        </Modal.Body>
+      </Modal>
+    );
+  }
 }

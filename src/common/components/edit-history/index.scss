@@ -160,10 +160,16 @@
           display: flex;
           align-items: center;
 
+
           svg {
             height: 16px;
             margin-right: 6px;
           }
+        }
+        .entry-tag {
+
+          cursor: none;
+          pointer-events: none;
         }
 
         .entry-body {

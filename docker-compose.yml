@@ -3,8 +3,6 @@ version: '3.7'
 services:
   app:
     image: pspc/ecency-boilerplate:latest
-    env_file:
-      - .env.local
     ports:
       - "80:3000"
     deploy:
@@ -12,7 +10,7 @@ services:
       resources:
         limits:
           cpus: "0.9"
-          memory: 2048M
+          memory: 500M
       update_config:
         parallelism: 4
         order: start-first

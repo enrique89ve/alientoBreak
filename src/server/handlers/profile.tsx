@@ -39,14 +39,16 @@ export default async (req: express.Request, res: express.Response) => {
       entryList = [];
     }
 
-    entries = {
-      [`${makeGroupKey(section, address)}`]: {
-        entries: optimizeEntries(entryList),
-        error: null,
-        loading: false,
-        hasMore: true,
-      },
-    };
+    if (entryList.length > 0) {
+      entries = {
+        [`${makeGroupKey(section, address)}`]: {
+          entries: optimizeEntries(entryList),
+          error: null,
+          loading: false,
+          hasMore: true,
+        },
+      };
+    }
   }
 
   let accounts = [];
@@ -56,7 +58,7 @@ export default async (req: express.Request, res: express.Response) => {
     if (account) {
       accounts.push(account);
     }
-  } catch (e) {}
+  } catch (e) { }
 
   const filter = ProfileFilter[section as ProfileFilter] || defaults.filter;
   const tag = ProfileFilter[section as ProfileFilter] ? address : "";
