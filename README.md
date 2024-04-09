@@ -13,14 +13,6 @@ Fast, simple and clean source code with Reactjs + Typescript.
 - [Production version][ecency_vision] - master branch
 - [Alpha version][ecency_alpha] - development branch
 
-## Desktop app
-
-Please check latest version on [Release page][ecency_release] or [Ecency link][ecency_desktop].
-
-- Mac users: `Ecency-3.x.x.dmg`
-- Windows users: `Ecency.Setup.3.x.x.exe`
-- Linux users: `ecency-surfer_3.x.x_amd_64.deb`, `Ecency-3.x.x.AppImage`, `ecency-surfer-3.x.x.x86_64.rpm`, `ecency-surfer-3.x.x.tar.gz`
-
 ## Developers
 
 Feel free to test it out and submit improvements and pull requests.
@@ -32,25 +24,30 @@ Feel free to test it out and submit improvements and pull requests.
 - node 16.0.0
 - yarn
 
-##### Clone 
+##### Clone
+
 `$ git clone https://github.com/ecency/ecency-vision`
 
 `$ cd ecency-vision`
 
 ##### Install dependencies
+
 `$ yarn`
 
 ##### Edit config file or define environment variables
+
 `$ nano src/config.ts`
 
 ##### Environment variables
 
-* `USE_PRIVATE` -  if instance has private api address and auth (0 or 1 value)
+- `USE_PRIVATE` - if instance has private api address and auth (0 or 1 value)
 
 ##### Start website in dev
+
 `$ yarn start`
 
 ##### Start desktop in dev
+
 `$ cd src/desktop`
 `$ yarn`
 `$ yarn dev`
@@ -71,7 +68,8 @@ docker run -it --rm -p 3000:3000 ecency/vision:latest
 ```
 
 Configure the instance using following environment variables:
- * `USE_PRIVATE`
+
+- `USE_PRIVATE`
 
 ```bash
 docker run -it --rm -p 3000:3000 -e USE_PRIVATE=1 ecency/vision:latest
@@ -89,7 +87,6 @@ docker stack deploy -c docker-compose.yml -c docker-compose.production.yml visio
 
 [![Contributors](https://contrib.rocks/image?repo=ecency/ecency-vision)](https://github.com/ecency/ecency-vision/graphs/contributors)
 
-
 ## Issues
 
 To report a non-critical issue, please file an issue on this GitHub project.
@@ -97,9 +94,3 @@ To report a non-critical issue, please file an issue on this GitHub project.
 If you find a security issue please report details to: security@ecency.com
 
 We will evaluate the risk and make a patch available before filing the issue.
-
-[//]: # 'LINKS'
-[ecency_vision]: https://ecency.com
-[ecency_desktop]: https://desktop.ecency.com
-[ecency_alpha]: https://alpha.ecency.com
-[ecency_release]: https://github.com/ecency/ecency-vision/releases
