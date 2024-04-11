@@ -1,4 +1,5 @@
 .community-selector {
+  padding: 14px 14px;
   display: inline-flex;
   align-items: center;
   cursor: pointer;
@@ -9,6 +10,7 @@
 
   .label {
     margin-right: 2px;
+    color: aliceblue;
   }
 
   svg {
@@ -24,7 +26,7 @@
 }
 
 .community-selector-modal {
-  .modal-header{
+  .modal-header {
     button {
       position: absolute;
       right: 15px;
@@ -41,8 +43,8 @@
       outline: none;
       border: none;
       opacity: 1;
-     
-      span:first-child{
+
+      span:first-child {
         font-size: 1.5rem;
         line-height: normal;
         padding: 0;
@@ -51,7 +53,7 @@
       }
     }
     button:hover {
-      opacity: 1!important;
+      opacity: 1 !important;
     }
   }
   .modal-body {
@@ -78,7 +80,7 @@
         min-height: 340px;
         width: 100%;
         height: auto;
-        
+
         @include user-grid-list(1, 1, 2);
 
         .list-body .list-item:hover .item-main .item-info .item-name {

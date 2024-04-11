@@ -1,26 +1,26 @@
 import React from "react";
 
-import {Modal} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
-import {FormControl} from "react-bootstrap";
+import { FormControl } from "react-bootstrap";
 
 import isEqual from "react-fast-compare";
 
-import {ActiveUser} from "../../store/active-user/types";
-import {Community} from "../../store/communities/types";
-import {Global} from "../../store/global/types";
-import {Subscription} from "../../store/subscriptions/types";
+import { ActiveUser } from "../../store/active-user/types";
+import { Community } from "../../store/communities/types";
+import { Global } from "../../store/global/types";
+import { Subscription } from "../../store/subscriptions/types";
 
 import BaseComponent from "../base";
 import UserAvatar from "../user-avatar/index";
 
-import {_t} from "../../i18n";
+import { _t } from "../../i18n";
 
 import isCommunity from "../../helper/is-community";
 
-import {getCommunities, getCommunity, getSubscriptions} from "../../api/bridge";
+import { getCommunities, getCommunity, getSubscriptions } from "../../api/bridge";
 
-import {menuDownSvg} from "../../img/svg";
+import { menuDownSvg } from "../../img/svg";
 
 interface BrowserProps {
     global: Global;
@@ -64,7 +64,7 @@ export class Browser extends BaseComponent<BrowserProps, BrowserState> {
             this._timer = null;
         }
 
-        this.stateSet({query: e.target.value}, () => {
+        this.stateSet({ query: e.target.value }, () => {
             this._timer = setTimeout(() => {
                 this.search();
             }, 200);
@@ -83,8 +83,8 @@ export class Browser extends BaseComponent<BrowserProps, BrowserState> {
     }
 
     render() {
-        const {activeUser, onSelect, onHide} = this.props;
-        const {subscriptions, results, query} = this.state;
+        const { activeUser, onSelect, onHide } = this.props;
+        const { subscriptions, results, query } = this.state;
 
         const search = <div className="search">
             <FormControl type="text" size="sm" placeholder={_t("community-selector.search-placeholder")} value={query} onChange={this.queryChanged} id="search-communities-input" spellCheck={true} />
@@ -104,7 +104,7 @@ export class Browser extends BaseComponent<BrowserProps, BrowserState> {
                                     onHide();
                                 }}>
                                     <div className="item-main">
-                                        {UserAvatar({...this.props, username: x.name, size: "small"})}
+                                        {UserAvatar({ ...this.props, username: x.name, size: "small" })}
                                         <div className="item-info">
                                             <span className="item-name notransalte">{x.title}</span>
                                         </div>
@@ -129,7 +129,7 @@ export class Browser extends BaseComponent<BrowserProps, BrowserState> {
                         onHide();
                     }}>
                         <div className="item-main">
-                            {UserAvatar({...this.props, username: activeUser.username, size: "small"})}
+                            {UserAvatar({ ...this.props, username: activeUser.username, size: "small" })}
                             <div className="item-info">
                                 <span className="item-name notransalte">{_t("community-selector.my-blog")}</span>
                             </div>
@@ -144,7 +144,7 @@ export class Browser extends BaseComponent<BrowserProps, BrowserState> {
                                 onHide();
                             }}>
                                 <div className="item-main">
-                                    {UserAvatar({...this.props, username: x[0], size: "small"})}
+                                    {UserAvatar({ ...this.props, username: x[0], size: "small" })}
                                     <div className="item-info">
                                         <span className="item-name notransalte">{x[1]}</span>
                                     </div>
@@ -184,7 +184,7 @@ export class CommunitySelector extends BaseComponent<Props, State> {
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
         if (!isEqual(this.props.tags, prevProps.tags)) {
-            if(this.props.tags.length > 0){
+            if (this.props.tags.length > 0) {
                 this.setState({ picked: false });
             }
             this.detectCommunity().then();
@@ -192,7 +192,7 @@ export class CommunitySelector extends BaseComponent<Props, State> {
     }
 
     extractCommunityName = (): string | null => {
-        const {tags} = this.props;
+        const { tags } = this.props;
         const [tag,] = tags;
 
 
@@ -211,7 +211,7 @@ export class CommunitySelector extends BaseComponent<Props, State> {
         const name = this.extractCommunityName();
 
         if (!name) {
-            this.stateSet({community: null});
+            this.stateSet({ community: null });
             return
         }
 
@@ -223,29 +223,29 @@ export class CommunitySelector extends BaseComponent<Props, State> {
             community = null;
         }
 
-        this.stateSet({community});
+        this.stateSet({ community });
     }
 
     toggle = () => {
-        const {visible} = this.state;
-        this.stateSet({visible: !visible});
+        const { visible } = this.state;
+        this.stateSet({ visible: !visible });
     }
 
     render() {
-        const {activeUser, tags, onSelect} = this.props;
-        const {community, visible, picked} = this.state;
+        const { activeUser, tags, onSelect } = this.props;
+        const { community, visible, picked } = this.state;
 
         let content;
         if (community) {
             content = <>
-                {UserAvatar({...this.props, username: community.name, size: "small"})}
+                {UserAvatar({ ...this.props, username: community.name, size: "small" })}
                 <span className="label">{community.title}</span> {menuDownSvg}
             </>;
         } else {
 
             if (tags.length > 0 || picked) {
                 content = <>
-                    {UserAvatar({...this.props, username: activeUser.username, size: "small"})}
+                    {UserAvatar({ ...this.props, username: activeUser.username, size: "small" })}
                     <span className="label">{_t("community-selector.my-blog")}</span> {menuDownSvg}
                 </>
             } else {
@@ -261,14 +261,14 @@ export class CommunitySelector extends BaseComponent<Props, State> {
 
             {visible && (
                 <Modal onHide={this.toggle} show={true} centered={true} animation={false} className="community-selector-modal" >
-                    <Modal.Header closeButton={true}/>
+                    <Modal.Header closeButton={true} />
 
                     <Modal.Body >
                         <Browser {...this.props} onHide={this.toggle} onSelect={(name: string | null) => {
                             const prev = this.extractCommunityName();
                             onSelect(prev, name);
-                            this.stateSet({picked: true});
-                        }}/>
+                            this.stateSet({ picked: true });
+                        }} />
                     </Modal.Body>
                 </Modal>
             )}

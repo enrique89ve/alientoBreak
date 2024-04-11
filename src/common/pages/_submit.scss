@@ -72,7 +72,7 @@
         }
 
         @include themify(night) {
-          color: $silver;
+          color: white;
         }
       }
     }
@@ -139,7 +139,7 @@
       padding: 5px 12px;
       margin-top: 10px;
       font-size: 21px;
-      color: $tundora;
+      color: white;
     }
 
     .preview-title {
@@ -188,7 +188,8 @@
   }
 
   &:not(.editing) {
-    .preview-panel, .advanced-panel {
+    .preview-panel,
+    .advanced-panel {
       .panel-header {
         @media (min-width: $lg-break) {
           margin-bottom: 36px;

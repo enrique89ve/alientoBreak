@@ -1,28 +1,28 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
-import {match} from "react-router";
+import { match } from "react-router";
 
 import queryString from "query-string";
 
 import isEqual from "react-fast-compare";
 
-import {History} from "history";
+import { History } from "history";
 
-import {Form, FormControl, Button, Spinner, Col, Row} from "react-bootstrap";
+import { Form, FormControl, Button, Spinner, Col, Row } from "react-bootstrap";
 
-import moment, {Moment} from "moment";
+import moment, { Moment } from "moment";
 
 import defaults from "../constants/defaults.json";
 
-import {proxifyImageSrc, renderPostBody, setProxyBase} from "@ecency/render-helper";
+import { proxifyImageSrc, renderPostBody, setProxyBase } from "@ecency/render-helper";
 
 setProxyBase(defaults.imageServer);
 
-import {Entry} from "../store/entries/types";
-import {Global} from "../store/global/types";
-import {FullAccount} from "../store/accounts/types";
+import { Entry } from "../store/entries/types";
+import { Global } from "../store/global/types";
+import { FullAccount } from "../store/accounts/types";
 
 import BaseComponent from "../components/base";
 import Meta from "../components/meta";
@@ -37,35 +37,35 @@ import CommunitySelector from "../components/community-selector";
 import Tag from "../components/tag";
 import LoginRequired from "../components/login-required";
 import WordCount from "../components/word-counter";
-import {makePath as makePathEntry} from "../components/entry-link";
-import {error, success} from "../components/feedback";
+import { makePath as makePathEntry } from "../components/entry-link";
+import { error, success } from "../components/feedback";
 import MdHandler from "../components/md-handler";
 import BeneficiaryEditor from "../components/beneficiary-editor";
 import PostScheduler from "../components/post-scheduler";
 
-import {getDrafts, addDraft, updateDraft, addSchedule, Draft} from "../api/private-api";
+import { getDrafts, addDraft, updateDraft, addSchedule, Draft } from "../api/private-api";
 
-import {createPermlink, extractMetaData, makeJsonMetaData, makeCommentOptions, createPatch} from "../helper/posting";
+import { createPermlink, extractMetaData, makeJsonMetaData, makeCommentOptions, createPatch } from "../helper/posting";
 
-import tempEntry, {correctIsoDate} from "../helper/temp-entry";
-import isCommunity from "../helper/is-community" ;
+import tempEntry, { correctIsoDate } from "../helper/temp-entry";
+import isCommunity from "../helper/is-community";
 
-import {RewardType, comment, reblog, formatError, BeneficiaryRoute} from "../api/operations";
+import { RewardType, comment, reblog, formatError, BeneficiaryRoute } from "../api/operations";
 
 import * as bridgeApi from "../api/bridge";
 import * as hiveApi from "../api/hive";
 
-import {_t} from "../i18n";
+import { _t } from "../i18n";
 
 import _c from "../util/fix-class-names"
 
 import * as ls from "../util/local-storage";
 
-import {version} from "../../../package.json";
+import { version } from "../../../package.json";
 
-import {checkSvg, contentSaveSvg} from "../img/svg";
+import { checkSvg, contentSaveSvg } from "../img/svg";
 
-import {PageProps, pageMapDispatchToProps, pageMapStateToProps} from "./common";
+import { PageProps, pageMapDispatchToProps, pageMapStateToProps } from "./common";
 import ModalConfirm from "../components/modal-confirm";
 import ResizableTextarea from "../components/resizable-text-area";
 import TextareaAutocomplete from "../components/textarea-autocomplete";
@@ -100,7 +100,7 @@ class PreviewContent extends Component<PreviewProps> {
     }
 
     render() {
-        const {title, tags, body, global} = this.props;
+        const { title, tags, body, global } = this.props;
         let renderedPreview = renderPostBody(body, false, global.canUseWebp);
         return (
             <>
@@ -123,7 +123,7 @@ class PreviewContent extends Component<PreviewProps> {
                     })}
                 </div>
 
-                <div className="preview-body markdown-view" dangerouslySetInnerHTML={{__html: renderedPreview }}/>
+                <div className="preview-body markdown-view" dangerouslySetInnerHTML={{ __html: renderedPreview }} />
             </>
         );
     }
@@ -193,22 +193,22 @@ class SubmitPage extends BaseComponent<Props, State> {
         this.detectDraft().then();
 
         let selectedThumbnail = ls.get('draft_selected_image');
-        if(selectedThumbnail && selectedThumbnail.length > 0){
+        if (selectedThumbnail && selectedThumbnail.length > 0) {
             this.selectThumbnails(selectedThumbnail)
         }
     };
 
     componentDidUpdate(prevProps: Readonly<Props>) {
-        const {activeUser, location} = this.props;
+        const { activeUser, location } = this.props;
 
         // active user changed
         if (activeUser?.username !== prevProps.activeUser?.username) {
             // delete active user from beneficiaries list
             if (activeUser) {
-                const {beneficiaries} = this.state;
+                const { beneficiaries } = this.state;
                 if (beneficiaries.find(x => x.account === activeUser.username)) {
                     const b = [...beneficiaries.filter(x => x.account !== activeUser.username)];
-                    this.stateSet({beneficiaries: b});
+                    this.stateSet({ beneficiaries: b });
                 }
             }
         }
@@ -220,26 +220,26 @@ class SubmitPage extends BaseComponent<Props, State> {
     }
 
     handleValidForm = (value: boolean) => {
-      this.setState({ disabled: value });
+        this.setState({ disabled: value });
     }
 
     isEntry = (): boolean => {
-        const {match, activeUser} = this.props;
-        const {path, params} = match;
+        const { match, activeUser } = this.props;
+        const { path, params } = match;
 
         return !!(activeUser && path.endsWith("/edit") && params.username && params.permlink);
     }
 
     isDraft = (): boolean => {
-        const {match, activeUser} = this.props;
-        const {path, params} = match;
+        const { match, activeUser } = this.props;
+        const { path, params } = match;
 
         return !!(activeUser && path.startsWith("/draft") && params.draftId);
     }
 
     detectEntry = async () => {
-        const {match, history} = this.props;
-        const {params} = match;
+        const { match, history } = this.props;
+        const { params } = match;
 
         if (this.isEntry()) {
             let entry;
@@ -256,21 +256,21 @@ class SubmitPage extends BaseComponent<Props, State> {
                 return;
             }
 
-            const {title, body} = entry;
+            const { title, body } = entry;
             let tags = entry.json_metadata?.tags || [];
             tags = [...new Set(tags)];
 
-            this.stateSet({title, tags, body, editingEntry: entry}, this.updatePreview);
+            this.stateSet({ title, tags, body, editingEntry: entry }, this.updatePreview);
         } else {
             if (this.state.editingEntry) {
-                this.stateSet({editingEntry: null});
+                this.stateSet({ editingEntry: null });
             }
         }
     };
 
     detectDraft = async () => {
-        const {match, activeUser, history} = this.props;
-        const {params} = match;
+        const { match, activeUser, history } = this.props;
+        const { params } = match;
 
         if (this.isDraft()) {
             let drafts: Draft[];
@@ -284,7 +284,7 @@ class SubmitPage extends BaseComponent<Props, State> {
             drafts = drafts.filter(x => x._id === params.draftId);
             if (drafts.length === 1) {
                 const [draft] = drafts;
-                const {title, body} = draft;
+                const { title, body } = draft;
 
                 let tags: string[];
 
@@ -294,7 +294,7 @@ class SubmitPage extends BaseComponent<Props, State> {
                     tags = [];
                 }
 
-                this.stateSet({title, tags, body, editingDraft: draft}, this.updatePreview);
+                this.stateSet({ title, tags, body, editingDraft: draft }, this.updatePreview);
             } else {
                 error('Could not fetch draft data.');
                 history.push('/submit');
@@ -302,18 +302,18 @@ class SubmitPage extends BaseComponent<Props, State> {
             }
         } else {
             if (this.state.editingDraft) {
-                this.stateSet({editingDraft: null});
+                this.stateSet({ editingDraft: null });
             }
         }
     }
 
     detectCommunity = () => {
-        const {location} = this.props;
+        const { location } = this.props;
         const qs = queryString.parse(location.search);
         if (qs.com) {
             const com = qs.com as string;
 
-            this.stateSet({tags: [com]});
+            this.stateSet({ tags: [com] });
         }
     }
 
@@ -327,13 +327,13 @@ class SubmitPage extends BaseComponent<Props, State> {
             return;
         }
 
-        const {title, tags, body} = localDraft;
-        this.stateSet({title, tags, body}, this.updatePreview);
+        const { title, tags, body } = localDraft;
+        this.stateSet({ title, tags, body }, this.updatePreview);
     };
 
     saveLocalDraft = (): void => {
-        const {title, tags, body} = this.state;
-        const localDraft: PostBase = {title, tags, body};
+        const { title, tags, body } = this.state;
+        const localDraft: PostBase = { title, tags, body };
         ls.set("local_draft", localDraft);
     };
 
@@ -343,11 +343,11 @@ class SubmitPage extends BaseComponent<Props, State> {
             return;
         }
 
-        this.stateSet({...advanced});
+        this.stateSet({ ...advanced });
     }
 
     saveAdvanced = (): void => {
-        const {reward, beneficiaries, schedule, reblogSwitch} = this.state;
+        const { reward, beneficiaries, schedule, reblogSwitch } = this.state;
 
         const advanced: Advanced = {
             reward,
@@ -360,14 +360,14 @@ class SubmitPage extends BaseComponent<Props, State> {
     }
 
     hasAdvanced = (): boolean => {
-        const {reward, beneficiaries, schedule, reblogSwitch} = this.state;
+        const { reward, beneficiaries, schedule, reblogSwitch } = this.state;
 
         return reward !== "default" || beneficiaries.length > 0 || schedule !== null || reblogSwitch;
     }
 
     titleChanged = (e: React.ChangeEvent<typeof FormControl & HTMLInputElement>): void => {
-        const {value: title} = e.target;
-        this.stateSet({title}, () => {
+        const { value: title } = e.target;
+        this.stateSet({ title }, () => {
             this.updatePreview();
         });
     };
@@ -380,76 +380,76 @@ class SubmitPage extends BaseComponent<Props, State> {
             return;
         }
 
-        this.stateSet({tags}, () => {
+        this.stateSet({ tags }, () => {
             this.updatePreview();
         });
 
         // Toggle off reblog switch if it is true and the first tag is not community tag.
-        const {reblogSwitch} = this.state;
+        const { reblogSwitch } = this.state;
         if (reblogSwitch) {
             const isCommunityTag = tags.length > 0 && isCommunity(tags[0]);
 
             if (!isCommunityTag) {
-                this.stateSet({reblogSwitch: false}, this.saveAdvanced);
+                this.stateSet({ reblogSwitch: false }, this.saveAdvanced);
             }
         }
     };
 
     bodyChanged = (e: React.ChangeEvent<typeof FormControl & HTMLInputElement>): void => {
-        const {value: body} = e.target;
-        this.stateSet({body}, () => {
+        const { value: body } = e.target;
+        this.stateSet({ body }, () => {
             this.updatePreview();
         });
     };
 
     rewardChanged = (e: React.ChangeEvent<typeof FormControl & HTMLInputElement>): void => {
         const reward = e.target.value as RewardType;
-        this.stateSet({reward}, this.saveAdvanced);
+        this.stateSet({ reward }, this.saveAdvanced);
     };
 
     beneficiaryAdded = (item: BeneficiaryRoute) => {
-        const {beneficiaries} = this.state;
+        const { beneficiaries } = this.state;
         const b = [...beneficiaries, item].sort((a, b) => a.account < b.account ? -1 : 1);
-        this.stateSet({beneficiaries: b}, this.saveAdvanced);
+        this.stateSet({ beneficiaries: b }, this.saveAdvanced);
     }
 
     beneficiaryDeleted = (username: string) => {
-        const {beneficiaries} = this.state;
+        const { beneficiaries } = this.state;
         const b = [...beneficiaries.filter(x => x.account !== username)];
-        this.stateSet({beneficiaries: b}, this.saveAdvanced);
+        this.stateSet({ beneficiaries: b }, this.saveAdvanced);
     }
 
     scheduleChanged = (d: Moment | null) => {
-        this.stateSet({schedule: d ? d.toISOString(true) : null}, this.saveAdvanced)
+        this.stateSet({ schedule: d ? d.toISOString(true) : null }, this.saveAdvanced)
     }
 
     reblogSwitchChanged = (e: React.ChangeEvent<typeof FormControl & HTMLInputElement>): void => {
-        this.stateSet({reblogSwitch: e.target.checked}, this.saveAdvanced);
+        this.stateSet({ reblogSwitch: e.target.checked }, this.saveAdvanced);
     }
 
     clear = (): void => {
-        this.stateSet({title: "", tags: [], body: "", advanced: false, reward: "default", beneficiaries: [], schedule: null, reblogSwitch: false, clearModal: false}, () => {
+        this.stateSet({ title: "", tags: [], body: "", advanced: false, reward: "default", beneficiaries: [], schedule: null, reblogSwitch: false, clearModal: false }, () => {
             this.updatePreview();
             this.saveAdvanced();
             ls.remove('draft_selected_image');
         });
 
-        const {editingDraft} = this.state;
+        const { editingDraft } = this.state;
         if (editingDraft) {
-            const {history} = this.props;
+            const { history } = this.props;
             history.push('/submit');
         }
     };
 
     clearAdvanced = (): void => {
-        this.stateSet({advanced: false, reward: "default", beneficiaries: [], schedule: null, reblogSwitch: false}, () => {
+        this.stateSet({ advanced: false, reward: "default", beneficiaries: [], schedule: null, reblogSwitch: false }, () => {
             this.saveAdvanced();
         });
     }
 
     toggleAdvanced = (): void => {
-        const {advanced} = this.state;
-        this.stateSet({advanced: !advanced})
+        const { advanced } = this.state;
+        this.stateSet({ advanced: !advanced })
     }
 
     updatePreview = (): void => {
@@ -459,9 +459,9 @@ class SubmitPage extends BaseComponent<Props, State> {
         }
 
         this._updateTimer = setTimeout(() => {
-            const {title, tags, body, editingEntry} = this.state;
-            const {thumbnails} = extractMetaData(body);
-            this.stateSet({preview: {title, tags, body}, thumbnails: thumbnails || []});
+            const { title, tags, body, editingEntry } = this.state;
+            const { thumbnails } = extractMetaData(body);
+            this.stateSet({ preview: { title, tags, body }, thumbnails: thumbnails || [] });
             if (editingEntry === null) {
                 this.saveLocalDraft();
             }
@@ -476,7 +476,7 @@ class SubmitPage extends BaseComponent<Props, State> {
     }
 
     validate = (): boolean => {
-        const {title, tags, body} = this.state;
+        const { title, tags, body } = this.state;
 
         if (title.trim() === "") {
             this.focusInput(".title-input");
@@ -504,15 +504,15 @@ class SubmitPage extends BaseComponent<Props, State> {
             return;
         }
 
-        const {activeUser, history, addEntry} = this.props;
-        const {title, tags, body, reward, reblogSwitch, beneficiaries, selectedThumbnail, selectionTouched} = this.state;
+        const { activeUser, history, addEntry } = this.props;
+        const { title, tags, body, reward, reblogSwitch, beneficiaries, selectedThumbnail, selectionTouched } = this.state;
 
         // make sure active user fully loaded
         if (!activeUser || !activeUser.data.__loaded) {
             return;
         }
 
-        this.stateSet({posting: true});
+        this.stateSet({ posting: true });
 
         let author = activeUser.username;
         let authorData = activeUser.data as FullAccount;
@@ -538,27 +538,27 @@ class SubmitPage extends BaseComponent<Props, State> {
         const meta = extractMetaData(body);
         let localThumbnail = ls.get('draft_selected_image');
 
-        if(meta.image){
-            if(selectionTouched){
-                meta.image = [selectedThumbnail, ...meta.image!.splice(0,9)]
+        if (meta.image) {
+            if (selectionTouched) {
+                meta.image = [selectedThumbnail, ...meta.image!.splice(0, 9)]
             }
             else {
-                meta.image = [ ...meta.image!.splice(0,9)]
+                meta.image = [...meta.image!.splice(0, 9)]
             }
         }
-        else if(selectedThumbnail === localThumbnail){
+        else if (selectedThumbnail === localThumbnail) {
             ls.remove('draft_selected_image');
         }
         else {
             meta.image = [selectedThumbnail]
         }
-        if(meta.image){
+        if (meta.image) {
             meta.image = [...new Set(meta.image)]
         }
-        
+
         const jsonMeta = makeJsonMetaData(meta, tags, version);
         const options = makeCommentOptions(author, permlink, reward, beneficiaries);
-        this.stateSet({posting: true});
+        this.stateSet({ posting: true });
         comment(author, "", parentPermlink, permlink, title, body, jsonMeta, options, true)
             .then(async () => {
 
@@ -597,7 +597,7 @@ class SubmitPage extends BaseComponent<Props, State> {
                 error(formatError(e));
             })
             .finally(() => {
-                this.stateSet({posting: false});
+                this.stateSet({ posting: false });
             });
     };
 
@@ -606,14 +606,14 @@ class SubmitPage extends BaseComponent<Props, State> {
             return;
         }
 
-        const {activeUser, updateEntry, history} = this.props;
-        const {title, tags, body, editingEntry, selectionTouched, selectedThumbnail} = this.state;
+        const { activeUser, updateEntry, history } = this.props;
+        const { title, tags, body, editingEntry, selectionTouched, selectedThumbnail } = this.state;
 
         if (!editingEntry) {
             return;
         }
 
-        const {body: oldBody, author, permlink, category, json_metadata} = editingEntry;
+        const { body: oldBody, author, permlink, category, json_metadata } = editingEntry;
 
         let newBody = body;
         const patch = createPatch(oldBody, newBody.trim());
@@ -622,28 +622,28 @@ class SubmitPage extends BaseComponent<Props, State> {
         }
 
         const meta = extractMetaData(body);
-        if(meta.image){
-            if(selectionTouched){
-                meta.image = [selectedThumbnail, ...meta.image!.splice(0,9)]
+        if (meta.image) {
+            if (selectionTouched) {
+                meta.image = [selectedThumbnail, ...meta.image!.splice(0, 9)]
             }
             else {
-                meta.image = [ ...meta.image!.splice(0,9)]
+                meta.image = [...meta.image!.splice(0, 9)]
             }
         }
-        else if(selectionTouched){
+        else if (selectionTouched) {
             meta.image = [selectedThumbnail]
         }
-        if(meta.image){
+        if (meta.image) {
             meta.image = [...new Set(meta.image)]
         }
-        
-        const jsonMeta = Object.assign({}, json_metadata, meta, {tags});
 
-        this.stateSet({posting: true});
-        
+        const jsonMeta = Object.assign({}, json_metadata, meta, { tags });
+
+        this.stateSet({ posting: true });
+
         comment(activeUser?.username!, "", category, permlink, title, newBody, jsonMeta, null)
             .then(() => {
-                this.stateSet({posting: false});
+                this.stateSet({ posting: false });
 
                 // Update the entry object in store
                 const entry: Entry = {
@@ -661,14 +661,14 @@ class SubmitPage extends BaseComponent<Props, State> {
                 history.push(newLoc);
             })
             .catch((e) => {
-                this.stateSet({posting: false});
+                this.stateSet({ posting: false });
                 error(formatError(e));
             });
     };
 
     cancelUpdate = () => {
-        const {history} = this.props;
-        const {editingEntry} = this.state;
+        const { history } = this.props;
+        const { editingEntry } = this.state;
         if (!editingEntry) {
             return;
         }
@@ -682,13 +682,13 @@ class SubmitPage extends BaseComponent<Props, State> {
             return;
         }
 
-        const {activeUser, history} = this.props;
-        const {title, body, tags, editingDraft} = this.state;
+        const { activeUser, history } = this.props;
+        const { title, body, tags, editingDraft } = this.state;
         const tagJ = tags.join(' ');
 
         let promise: Promise<any>;
 
-        this.stateSet({saving: true});
+        this.stateSet({ saving: true });
 
         if (editingDraft) {
             promise = updateDraft(activeUser?.username!, editingDraft._id, title, body, tagJ).then(() => {
@@ -698,14 +698,14 @@ class SubmitPage extends BaseComponent<Props, State> {
             promise = addDraft(activeUser?.username!, title, body, tagJ).then(resp => {
                 success(_t('submit.draft-saved'));
 
-                const {drafts} = resp;
+                const { drafts } = resp;
                 const draft = drafts[drafts.length - 1];
 
                 history.push(`/draft/${draft._id}`);
             })
         }
 
-        promise.catch(() => error(_t('g.server-error'))).finally(() => this.stateSet({saving: false}))
+        promise.catch(() => error(_t('g.server-error'))).finally(() => this.stateSet({ saving: false }))
     }
 
     schedule = async () => {
@@ -713,15 +713,15 @@ class SubmitPage extends BaseComponent<Props, State> {
             return;
         }
 
-        const {activeUser} = this.props;
-        const {title, tags, body, reward, reblogSwitch, beneficiaries, schedule} = this.state;
+        const { activeUser } = this.props;
+        const { title, tags, body, reward, reblogSwitch, beneficiaries, schedule } = this.state;
 
         // make sure active user and schedule date has set
         if (!activeUser || !schedule) {
             return;
         }
 
-        this.stateSet({posting: true});
+        this.stateSet({ posting: true });
 
         let author = activeUser.username;
 
@@ -745,7 +745,7 @@ class SubmitPage extends BaseComponent<Props, State> {
 
         const reblog = isCommunity(tags[0]) && reblogSwitch;
 
-        this.stateSet({posting: true});
+        this.stateSet({ posting: true });
         addSchedule(author, permlink, title, body, jsonMeta, options, schedule, reblog).then(resp => {
             success(_t('submit.scheduled'));
             this.clear();
@@ -755,7 +755,7 @@ class SubmitPage extends BaseComponent<Props, State> {
             } else {
                 error(_t('g.server-error'))
             }
-        }).finally(() => this.stateSet({posting: false}))
+        }).finally(() => this.stateSet({ posting: false }))
     }
 
     selectThumbnails = (selectedThumbnail: string) => {
@@ -764,7 +764,7 @@ class SubmitPage extends BaseComponent<Props, State> {
     }
 
     render() {
-        const {title, tags, body, reward, preview, posting, editingEntry, saving, editingDraft, advanced, beneficiaries, schedule, reblogSwitch, clearModal, selectedThumbnail, thumbnails, disabled} = this.state;
+        const { title, tags, body, reward, preview, posting, editingEntry, saving, editingDraft, advanced, beneficiaries, schedule, reblogSwitch, clearModal, selectedThumbnail, thumbnails, disabled } = this.state;
 
         //  Meta config
         const metaProps = {
@@ -772,19 +772,19 @@ class SubmitPage extends BaseComponent<Props, State> {
             description: _t("submit.page-description"),
         };
 
-        const {global, activeUser} = this.props;
+        const { global, activeUser } = this.props;
 
-        const spinner = <Spinner animation="grow" variant="light" size="sm" style={{marginRight: "6px"}}/>;
+        const spinner = <Spinner animation="grow" variant="light" size="sm" style={{ marginRight: "6px" }} />;
         // const isMobile = typeof window !== 'undefined' && window.innerWidth < 570;
         let containerClasses = global.isElectron ? " mt-0 pt-6" : "";
         return (
             <>
                 <Meta {...metaProps} />
-                <FullHeight/>
-                <Theme global={this.props.global}/>
-                <Feedback/>
-                {clearModal && <ModalConfirm onConfirm={this.clear} onCancel={() => this.setState({clearModal:false})}/>}
-                {global.isElectron && <MdHandler global={this.props.global} history={this.props.history}/>}
+                <FullHeight />
+                <Theme global={this.props.global} />
+                <Feedback />
+                {clearModal && <ModalConfirm onConfirm={this.clear} onCancel={() => this.setState({ clearModal: false })} />}
+                {global.isElectron && <MdHandler global={this.props.global} history={this.props.history} />}
                 {global.isElectron ?
                     NavBarElectron({
                         ...this.props,
@@ -799,7 +799,7 @@ class SubmitPage extends BaseComponent<Props, State> {
                                 activeUser,
                                 tags,
                                 onSelect: (prev, next) => {
-                                    const {tags} = this.state;
+                                    const { tags } = this.state;
 
                                     const newTags = [
                                         ...[next ? next : ""],
@@ -810,7 +810,7 @@ class SubmitPage extends BaseComponent<Props, State> {
                                 }
                             })}
                         </div>}
-                        {EditorToolbar({...this.props})}
+                        {EditorToolbar({ ...this.props })}
                         <div className="title-input">
                             <Form.Control
                                 className="accepts-emoji"
@@ -848,26 +848,26 @@ class SubmitPage extends BaseComponent<Props, State> {
                         </div>
                         <div className="bottom-toolbar">
                             {editingEntry === null && (
-                                <Button variant="outline-info" onClick={()=>this.setState({clearModal: true})}>
+                                <Button variant="outline-info" onClick={() => this.setState({ clearModal: true })}>
                                     {_t("submit.clear")}
                                 </Button>
                             )}
 
                             <Button variant="outline-primary" onClick={this.toggleAdvanced} className="ml-auto">
-                            {advanced ?
-                                _t("submit.preview") :
-                                <>
-                                    {_t("submit.advanced")}
-                                    {this.hasAdvanced() ? " •••" : null}
-                                </>}
+                                {advanced ?
+                                    _t("submit.preview") :
+                                    <>
+                                        {_t("submit.advanced")}
+                                        {this.hasAdvanced() ? " •••" : null}
+                                    </>}
                             </Button>
                         </div>
                     </div>
-                    <div className="flex-spacer"/>
+                    <div className="flex-spacer" />
                     {(() => {
                         const toolBar = schedule ?
                             <div className="bottom-toolbar">
-                                <span/>
+                                <span />
                                 {LoginRequired({
                                     ...this.props,
                                     children: <Button
@@ -883,10 +883,10 @@ class SubmitPage extends BaseComponent<Props, State> {
                             <div className="bottom-toolbar">
                                 {editingEntry === null && (
                                     <>
-                                        <span/>
+                                        <span />
                                         <div>
                                             {global.usePrivate && (
-                                                <Button variant="outline-primary" style={{marginRight: "6px"}} onClick={this.saveDraft} disabled={disabled || saving || posting}>
+                                                <Button variant="outline-primary" style={{ marginRight: "6px" }} onClick={this.saveDraft} disabled={disabled || saving || posting}>
                                                     {contentSaveSvg} {editingDraft === null ? _t("submit.save-draft") : _t("submit.update-draft")}
                                                 </Button>)}
                                             {LoginRequired({
@@ -951,22 +951,22 @@ class SubmitPage extends BaseComponent<Props, State> {
                                                 </Form.Label>
                                                 <Col sm="9">
                                                     <BeneficiaryEditor author={activeUser?.username} list={beneficiaries} onAdd={this.beneficiaryAdded}
-                                                                    onDelete={this.beneficiaryDeleted}/>
+                                                        onDelete={this.beneficiaryDeleted} />
                                                     <Form.Text muted={true}>{_t("submit.beneficiaries-hint")}</Form.Text>
                                                 </Col>
                                             </Form.Group>
                                             {global.usePrivate && <Form.Group as={Row}>
-                                            <Form.Label column={true} sm="3">
-                                                {_t("submit.schedule")}
-                                            </Form.Label>
-                                            <Col sm="9">
-                                                <PostScheduler date={schedule ? moment(schedule) : null} onChange={this.scheduleChanged}/>
-                                                <Form.Text muted={true}>{_t("submit.schedule-hint")}</Form.Text>
-                                            </Col>
+                                                <Form.Label column={true} sm="3">
+                                                    {_t("submit.schedule")}
+                                                </Form.Label>
+                                                <Col sm="9">
+                                                    <PostScheduler date={schedule ? moment(schedule) : null} onChange={this.scheduleChanged} />
+                                                    <Form.Text muted={true}>{_t("submit.schedule-hint")}</Form.Text>
+                                                </Col>
                                             </Form.Group>}
                                             {tags.length > 0 && isCommunity(tags[0]) && (
                                                 <Form.Group as={Row}>
-                                                    <Col sm="3"/>
+                                                    <Col sm="3" />
                                                     <Col sm="9">
                                                         <Form.Check
                                                             type="switch"
@@ -980,34 +980,34 @@ class SubmitPage extends BaseComponent<Props, State> {
                                                 </Form.Group>
                                             )}
                                         </>}
-                                        {thumbnails.length > 0 && 
+                                        {thumbnails.length > 0 &&
                                             <Form.Group as={Row}>
                                                 <Form.Label column={true} sm="3">
                                                     {_t("submit.thumbnail")}
                                                 </Form.Label>
                                                 <div className="col-sm-9 d-flex flex-wrap selection-container">
-                                                    {[...new Set(thumbnails)]!.map((item, i)=> {
+                                                    {[...new Set(thumbnails)]!.map((item, i) => {
                                                         let selectedItem = selectedThumbnail;
-                                                        switch(selectedItem){
+                                                        switch (selectedItem) {
                                                             case '':
                                                                 selectedItem = thumbnails[0];
                                                                 break;
                                                         }
-                                                        if(!thumbnails.includes(selectedThumbnail)){
+                                                        if (!thumbnails.includes(selectedThumbnail)) {
                                                             selectedItem = thumbnails[0];
                                                         }
-                                                        return <div className="position-relative" key={item+i}>
-                                                                    <div
-                                                                        className={`selection-item shadow ${selectedItem === item ? "selected" : ""} mr-3 mb-2`}
-                                                                        style={{backgroundImage:`url("${proxifyImageSrc(item, 260, 200)}")`}}
-                                                                        onClick={() => { this.selectThumbnails(item); this.setState({selectionTouched: true})}}
-                                                                        key={item}
-                                                                    />
-                                                                    {selectedItem === item && <div className="text-success check position-absolute bg-white rounded-circle d-flex justify-content-center align-items-center">
-                                                                        {checkSvg}
-                                                                    </div>}
-                                                                </div>
-                                                        }
+                                                        return <div className="position-relative" key={item + i}>
+                                                            <div
+                                                                className={`selection-item shadow ${selectedItem === item ? "selected" : ""} mr-3 mb-2`}
+                                                                style={{ backgroundImage: `url("${proxifyImageSrc(item, 260, 200)}")` }}
+                                                                onClick={() => { this.selectThumbnails(item); this.setState({ selectionTouched: true }) }}
+                                                                key={item}
+                                                            />
+                                                            {selectedItem === item && <div className="text-success check position-absolute bg-white rounded-circle d-flex justify-content-center align-items-center">
+                                                                {checkSvg}
+                                                            </div>}
+                                                        </div>
+                                                    }
                                                     )}
                                                 </div>
                                             </Form.Group>
@@ -1021,7 +1021,7 @@ class SubmitPage extends BaseComponent<Props, State> {
                         return <div className="preview-panel">
                             <div className="panel-header">
                                 <h2 className="panel-header-title">{_t("submit.preview")}</h2>
-                                <WordCount selector=".preview-body" watch={true}/>
+                                <WordCount selector=".preview-body" watch={true} />
                             </div>
                             <PreviewContent history={this.props.history} global={this.props.global} {...preview} />
                             {toolBar}
@@ -1034,11 +1034,11 @@ class SubmitPage extends BaseComponent<Props, State> {
 }
 
 const SubmitWithProviders = (props: Props) => {
-  return (
-    <ThreeSpeakManager>
-      <SubmitPage {...props} />
-    </ThreeSpeakManager>
-  );
+    return (
+        <ThreeSpeakManager>
+            <SubmitPage {...props} />
+        </ThreeSpeakManager>
+    );
 };
 
 export default connect(pageMapStateToProps, pageMapDispatchToProps)(SubmitWithProviders as any);

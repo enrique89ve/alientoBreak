@@ -338,7 +338,7 @@ export class NavBar extends Component<Props, State> {
                       >
                         {_t("g.login")}
                       </Button>
-                      <Link className="btn btn-primary" to="/signup">
+                      <Link className="btn btn-primary" to="/signup" target="_black">
                         {_t("g.signup")}
                       </Link>
                     </div>
@@ -416,7 +416,7 @@ export class NavBar extends Component<Props, State> {
                     <div className="ml-3 text-15">{_t("g.login")}</div>
                   </div>
                   <Link
-                    to="/signup"
+                    to="https://signup.hive.io/"
                     onClick={() =>
                       !showMobileSearch && this.setState({ smVisible: false })
                     }

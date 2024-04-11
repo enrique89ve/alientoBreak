@@ -691,6 +691,19 @@ export class Login extends BaseComponent<LoginProps, State> {
           </Button>
         </Form>
         <OrDivider />
+        {global.hasKeyChain && (
+          <div className="kc-login">
+            <a
+              className={_c(
+                `btn btn-outline-primary ${inProgress ? "disabled" : ""}`
+              )}
+              onClick={this.kcLogin}
+            >
+              <img src={keyChainLogo} className="kc-logo" alt="keychain" />{" "}
+              {_t("login.with-keychain")}
+            </a>
+          </div>
+        )}
         <div className="hs-login">
           <a
             className={_c(
@@ -706,19 +719,7 @@ export class Login extends BaseComponent<LoginProps, State> {
             {_t("login.with-hive-signer")}
           </a>
         </div>
-        {global.hasKeyChain && (
-          <div className="kc-login">
-            <a
-              className={_c(
-                `btn btn-outline-primary ${inProgress ? "disabled" : ""}`
-              )}
-              onClick={this.kcLogin}
-            >
-              <img src={keyChainLogo} className="kc-logo" alt="keychain" />{" "}
-              {_t("login.with-keychain")}
-            </a>
-          </div>
-        )}
+
         {activeUser === null && (
           <p>
             {_t("login.sign-up-text-1")}

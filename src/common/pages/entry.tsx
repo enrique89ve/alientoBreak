@@ -1177,7 +1177,7 @@ class EntryPage extends BaseComponent<Props, State> {
                                 k="entry.via-app"
                                 args={{ app: appShort }}
                               >
-                                <a href="https://starterkit.tech/faqs#source-label" />
+                                <a href="https://aliento.blog" />
                               </Tsx>
                             </div>
                           </>

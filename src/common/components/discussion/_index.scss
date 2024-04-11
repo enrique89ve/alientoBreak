@@ -93,14 +93,13 @@
 
   .discussion-list {
     .discussion-item {
-
       &.selected-item > .item-inner {
         background: lighten($dark-sky-blue, 42);
         border: 1px solid $dark-sky-blue;
         padding-left: 4px;
         @include themify(night) {
           background: lighten($dark-two, 10);
-      }
+        }
       }
 
       .item-anchor {
@@ -200,7 +199,7 @@
             }
 
             .date {
-              opacity: 0.7;
+              opacity: 0.95;
             }
           }
 
@@ -222,7 +221,10 @@
             display: flex;
             width: 100%;
 
-            .reply-btn, .edit-btn, .delete-btn, .mute-btn {
+            .reply-btn,
+            .edit-btn,
+            .delete-btn,
+            .mute-btn {
               color: lighten($steel-grey, 10);
               cursor: pointer;
 
@@ -236,7 +238,9 @@
               }
             }
 
-            .edit-btn, .delete-btn, .mute-btn {
+            .edit-btn,
+            .delete-btn,
+            .mute-btn {
               margin-left: 10px;
               color: lighten($steel-grey, 10);
 
@@ -311,14 +315,14 @@
     @media (min-width: $md-break) {
       width: 45%;
       top: -50px;
-      left: -20px
+      left: -20px;
     }
   }
   .profile-container-bottom {
     @media (min-width: $md-break) {
       width: 45%;
       bottom: 50px;
-      left: -20px
+      left: -20px;
     }
   }
 }
@@ -339,11 +343,11 @@
 }
 
 .flex-1 {
-  flex: 1
+  flex: 1;
 }
 
-.dropdown-container{
+.dropdown-container {
   .dropdown-btn {
-    color: #939a9f !important
+    color: #939a9f !important;
   }
 }

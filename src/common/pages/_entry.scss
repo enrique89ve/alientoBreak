@@ -28,7 +28,7 @@
   @include themify(burning) {
     color: $burning-primary;
   }
-  
+
   @include themify(dusk) {
     color: $dusk-primary;
   }
@@ -164,7 +164,7 @@
         background-color: $white-three;
         color: $burning-primary;
       }
-  
+
       @include themify(dusk) {
         background-color: $white-three;
         color: $dusk-primary;
@@ -388,7 +388,8 @@
 
         .entry-tag {
           border-radius: 25px;
-          cursor: pointer;
+          cursor: none;
+          pointer-events: none;
           font-size: 14px;
           line-height: 1em;
           margin-bottom: 4px;
@@ -412,7 +413,6 @@
         display: flex;
         flex-grow: 1;
         flex-shrink: 0;
-
 
         @media (min-width: $md-break) {
           flex-direction: row;

@@ -1,4 +1,4 @@
-import {EntryFilter, ProfileFilter} from "./store/global/types";
+import { EntryFilter, ProfileFilter } from "./store/global/types";
 
 const entryFilters = Object.values(EntryFilter);
 const profileFilters = Object.values(ProfileFilter);

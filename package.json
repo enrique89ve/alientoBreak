@@ -1,11 +1,11 @@
 {
-  "name": "ecency-vision",
-  "version": "3.0.22",
+  "name": "alientoblog",
+  "version": "1.0.1",
   "private": true,
   "license": "MIT",
   "scripts": {
     "start": "razzle start",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=500 razzle build --noninteractive",
+    "build": "razzle build --noninteractive",
     "test": "TZ=UTC razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js"
   },
