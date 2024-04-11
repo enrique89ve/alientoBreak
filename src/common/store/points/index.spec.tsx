@@ -35,7 +35,7 @@ it("6- errorAct", () => {
 });
 import React from "react";
 import { shallow } from "enzyme";
-import { EntryLink } from "./index";
+import EntryLink from "./index";
 
 describe("EntryLink", () => {
     const historyMock = { push: jest.fn() };

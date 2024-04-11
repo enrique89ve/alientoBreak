@@ -1,9 +1,10 @@
-import React from 'react';
-
-import EntryLink from './index';
+import React, { ReactNode } from 'react';
+import EntryLink from "./index";
 
 import TestRenderer from 'react-test-renderer';
-import {createBrowserHistory} from 'history';
+import { createBrowserHistory } from 'history';
+
+
 
 
 it('(1) Default Render', () => {
@@ -17,7 +18,7 @@ it('(1) Default Render', () => {
         }
     };
     const renderer = TestRenderer.create(
-        <EntryLink {...props}/>
+        <EntryLink {...props} />
     );
     expect(renderer.toJSON()).toMatchSnapshot();
 });
