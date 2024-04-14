@@ -25,10 +25,17 @@ export default async (req: Request, res: Response) => {
     try {
         entry = await bridgeApi.getPost(author, permlink);
     } catch (error) {
+
+        entry = null;
+
         console.error(
-            `${new Date().toISOString()} 
-      } ERROR fetching query @${author}/${permlink}`
+
+            `${new Date().toISOString()} ERROR fetching query @${author}/${permlink}`
         );
+        res.status(404);
+        res.send("Not found.");
+        return;
+
     }
 
     let entries = {};
@@ -82,4 +89,5 @@ export default async (req: Request, res: Response) => {
     }
 
     res.send(render(req, preLoadedState));
+
 };
