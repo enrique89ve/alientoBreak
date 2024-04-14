@@ -70,10 +70,6 @@
       padding: 10px 4px;
       border-radius: 6px;
 
-      @include themify(day) {
-        background: lighten($dark-sky-blue, 42);
-      }
-
       @include themify(night) {
         background: $dark-grey-blue;
       }

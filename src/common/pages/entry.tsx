@@ -74,6 +74,8 @@ import entryDeleteBtn from "../components/entry-delete-btn";
 import { SelectionPopover } from "../components/selection-popover";
 import { commentHistory } from "../api/private-api";
 
+
+
 setProxyBase(defaults.imageServer);
 
 interface MatchParams {
@@ -202,6 +204,8 @@ class EntryPage extends BaseComponent<Props, State> {
 
   }
 
+
+
   //     updateReply = (text: string) => {
   //         const entry = this.getEntry();
   //         const {activeUser, updateReply} = this.props;
@@ -302,6 +306,8 @@ class EntryPage extends BaseComponent<Props, State> {
     bridgeApi.getPost(author, permlink)
       .then((entry) => {
         if (entry) {
+          console.log("entry", entry);
+
           reducerFn(entry);
           this.stateSet({ loading: false });
         }
@@ -337,6 +343,7 @@ class EntryPage extends BaseComponent<Props, State> {
     const { entries, match } = this.props;
     const { username, permlink } = match.params;
     const author = username.replace("@", "");
+
 
     const groupKeys = Object.keys(entries);
     let entry: Entry | undefined = undefined;

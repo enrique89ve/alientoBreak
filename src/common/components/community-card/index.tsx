@@ -1,18 +1,19 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {Button, Modal} from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
+import { renderPostBody } from "@ecency/render-helper";
 
-import {History} from "history";
+import { History } from "history";
 
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import isEqual from "react-fast-compare";
 
-import {Global} from "../../store/global/types";
-import {Account, FullAccount} from "../../store/accounts/types";
-import {Community, roleMap, ROLES} from "../../store/communities/types";
-import {ActiveUser} from "../../store/active-user/types";
-import {User} from "../../store/users/types";
+import { Global } from "../../store/global/types";
+import { Account, FullAccount } from "../../store/accounts/types";
+import { Community, roleMap, ROLES } from "../../store/communities/types";
+import { ActiveUser } from "../../store/active-user/types";
+import { User } from "../../store/users/types";
 
 import BaseComponent from "../base";
 import UserAvatar from "../user-avatar";
@@ -21,115 +22,115 @@ import CommunitySettings from "../community-settings";
 import CommunityRewardsRegistrationDialog from "../community-rewards-registration";
 import ImageUploadDialog from "../image-upload";
 import Tooltip from "../tooltip";
-import {error, success} from "../feedback";
+import { error, success } from "../feedback";
 
-import {_t} from "../../i18n";
+import { _t } from "../../i18n";
 
-import {getAccount} from "../../api/hive";
-import {updateProfile} from "../../api/operations";
+import { getAccount } from "../../api/hive";
+import { updateProfile } from "../../api/operations";
 
 import ln2list from "../../util/nl2list";
 
-import {accountGroupSvg, informationOutlineSvg, scriptTextOutlineSvg, pencilOutlineSvg} from "../../img/svg";
+import { accountGroupSvg, informationOutlineSvg, scriptTextOutlineSvg, pencilOutlineSvg } from "../../img/svg";
 
 
 interface EditPicProps {
-    activeUser: ActiveUser;
-    community?: Community;
-    account: FullAccount;
-    addAccount: (data: Account) => void;
-    onUpdate: () => void
+  activeUser: ActiveUser;
+  community?: Community;
+  account: FullAccount;
+  addAccount: (data: Account) => void;
+  onUpdate: () => void
 }
 
 interface EditPicState {
-    account: Account | null;
-    dialog: boolean;
-    inProgress: boolean;
+  account: Account | null;
+  dialog: boolean;
+  inProgress: boolean;
 }
 
 export class EditPic extends BaseComponent<EditPicProps, EditPicState> {
-    state: EditPicState = {
-        account: null,
-        dialog: false,
-        inProgress: false
+  state: EditPicState = {
+    account: null,
+    dialog: false,
+    inProgress: false
+  }
+
+  toggleDialog = () => {
+    const { dialog } = this.state;
+    this.stateSet({ dialog: !dialog })
+  }
+
+  save = (url: string) => {
+    const { account } = this.props;
+    if (account.profile?.profile_image === url) {
+      this.toggleDialog();
+      return;
     }
 
-    toggleDialog = () => {
-        const {dialog} = this.state;
-        this.stateSet({dialog: !dialog})
-    }
+    this.stateSet({ inProgress: true });
 
-    save = (url: string) => {
-        const {account} = this.props;
-        if (account.profile?.profile_image === url) {
-            this.toggleDialog();
-            return;
-        }
+    const { addAccount, onUpdate } = this.props;
+    const { profile } = account;
 
-        this.stateSet({inProgress: true});
+    const newProfile = {
+      name: profile?.name || '',
+      about: profile?.about || '',
+      cover_image: profile?.cover_image || '',
+      profile_image: url,
+      website: profile?.website || '',
+      location: profile?.location || '',
+    };
 
-        const {addAccount, onUpdate} = this.props;
-        const {profile} = account;
+    updateProfile(account, newProfile).then(r => {
+      success(_t('community-card.profile-image-updated'));
+      return getAccount(account.name);
+    }).then((account) => {
+      // update reducer
+      addAccount(account);
 
-        const newProfile = {
-            name: profile?.name || '',
-            about: profile?.about || '',
-            cover_image: profile?.cover_image || '',
-            profile_image: url,
-            website: profile?.website || '',
-            location: profile?.location || '',
-        };
+      // close dialog
+      this.toggleDialog();
+      onUpdate();
+    }).catch(() => {
+      error(_t('g.server-error'));
+    }).finally(() => {
+      this.stateSet({ inProgress: false });
+    });
+  }
 
-        updateProfile(account, newProfile).then(r => {
-            success(_t('community-card.profile-image-updated'));
-            return getAccount(account.name);
-        }).then((account) => {
-            // update reducer
-            addAccount(account);
+  render() {
+    const { activeUser, account } = this.props;
+    const { dialog, inProgress } = this.state;
 
-            // close dialog
-            this.toggleDialog();
-            onUpdate();
-        }).catch(() => {
-            error(_t('g.server-error'));
-        }).finally(() => {
-            this.stateSet({inProgress: false});
-        });
-    }
-
-    render() {
-        const {activeUser, account} = this.props;
-        const {dialog, inProgress} = this.state;
-
-        return <>
-            <Tooltip content={_t('community-card.profile-image-edit')}>
-                <div className="edit-button" onClick={this.toggleDialog}>{pencilOutlineSvg}</div>
-            </Tooltip>
-            {dialog && (
-                <ImageUploadDialog
-                    activeUser={activeUser!}
-                    title={_t('community-card.profile-image')}
-                    defImage={account.profile?.profile_image || ""}
-                    inProgress={inProgress}
-                    onDone={this.save}
-                    onHide={this.toggleDialog}
-                />
-            )}
-        </>
-    }
+    return <>
+      <Tooltip content={_t('community-card.profile-image-edit')}>
+        <div className="edit-button" onClick={this.toggleDialog}>{pencilOutlineSvg}</div>
+      </Tooltip>
+      {dialog && (
+        <ImageUploadDialog
+          activeUser={activeUser!}
+          title={_t('community-card.profile-image')}
+          defImage={account.profile?.profile_image || ""}
+          inProgress={inProgress}
+          onDone={this.save}
+          onHide={this.toggleDialog}
+        />
+      )}
+    </>
+  }
 }
 
 interface Props {
-    history: History;
-    global: Global;
-    community: Community;
-    account: Account;
-    users: User[];
-    activeUser: ActiveUser | null;
-    signingKey: string;
-    setSigningKey: (key: string) => void;
-    addAccount: (data: Account) => void;
-    addCommunity: (data: Community) => void;
+  history: History;
+  global: Global;
+  community: Community;
+  account: Account;
+  users: User[];
+  activeUser: ActiveUser | null;
+  signingKey: string;
+  setSigningKey: (key: string) => void;
+  addAccount: (data: Account) => void;
+  addCommunity: (data: Community) => void;
 }
 
 interface DialogInfo {
@@ -194,28 +195,24 @@ export class CommunityCard extends Component<Props, State> {
       [ROLES.OWNER.toString(), ROLES.ADMIN.toString()].includes(roleInTeam)
     );
 
-    const description =
-      community.description.trim() !== ""
-        ? `${ln2list(community.description).map(
-            (x, i) =>
-              `${x}${
-                i !== ln2list(community.description).length - 1
-                  ? "<br /><br />"
-                  : ""
-              }`
-          )}`
-        : "";
+    const description: JSX.Element | null =
+      community.description.trim() !== "" ? (
+        <div
+          className="preview-body markdown-view"
+          dangerouslySetInnerHTML={{ __html: renderPostBody(community.description, false) }}
+
+        />
+      ) : null;
 
     const rules =
       community.flag_text.trim() !== ""
         ? `${ln2list(community.flag_text).map(
-            (x, i) =>
-              `${x}${
-                i !== ln2list(community.flag_text).length - 1
-                  ? "<br /><br />"
-                  : ""
-              }`
-          )}`
+          (x, i) =>
+            `${x}${i !== ln2list(community.flag_text).length - 1
+              ? "<br /><br />"
+              : ""
+            }`
+        ).join("")}`
         : "";
 
     const team: JSX.Element = (
@@ -284,18 +281,13 @@ export class CommunityCard extends Component<Props, State> {
                 onClick={() => {
                   this.toggleInfo({
                     title: _t("community-card.description"),
-                    content: description,
+                    content: description
                   });
                 }}
               >
                 {informationOutlineSvg} {_t("community-card.description")}
               </div>
-              <div
-                className="section-content"
-                dangerouslySetInnerHTML={{
-                  __html: description,
-                }}
-              />
+              <div className="section-content">{description}</div>
             </div>
           )}
           {rules && (
@@ -414,19 +406,19 @@ export class CommunityCard extends Component<Props, State> {
 }
 
 export default (p: Props) => {
-    const props: Props = {
-        history: p.history,
-        global: p.global,
-        community: p.community,
-        account: p.account,
-        users: p.users,
-        signingKey: p.signingKey,
-        setSigningKey: p.setSigningKey,
-        activeUser: p.activeUser,
-        addAccount: p.addAccount,
-        addCommunity: p.addCommunity
-    }
+  const props: Props = {
+    history: p.history,
+    global: p.global,
+    community: p.community,
+    account: p.account,
+    users: p.users,
+    signingKey: p.signingKey,
+    setSigningKey: p.setSigningKey,
+    activeUser: p.activeUser,
+    addAccount: p.addAccount,
+    addCommunity: p.addCommunity
+  }
 
-    return <CommunityCard {...props} />;
+  return <CommunityCard {...props} />;
 }
 
