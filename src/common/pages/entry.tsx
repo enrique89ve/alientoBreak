@@ -306,7 +306,6 @@ class EntryPage extends BaseComponent<Props, State> {
     bridgeApi.getPost(author, permlink)
       .then((entry) => {
         if (entry) {
-          console.log("entry", entry);
 
           reducerFn(entry);
           this.stateSet({ loading: false });
