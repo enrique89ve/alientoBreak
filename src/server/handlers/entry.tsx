@@ -45,8 +45,7 @@ export default async (req: Request, res: Response) => {
         if (dmca.some((rx: string) => new RegExp(rx).test(`@${entry?.author}/${entry?.permlink}`))) {
             entry.body = "This post is not available due to a copyright/fraudulent claim.";
             entry.title = "";
-        }
-        if (!category) {
+        } else if (!category) {
             res.redirect(`/${entry.category}/@${author}/${permlink}`);
             return;
         }
